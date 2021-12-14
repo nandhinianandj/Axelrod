@@ -4,24 +4,19 @@ from typing import Dict, Union
 from axelrod.action import Action, actions_to_str
 from axelrod.player import Player
 
+from DDPG import DDPG
+
 Score = Union[int, float]
 
 C, D = Action.C, Action.D
 
 
-class RiskyQLearner(Player):
+class DDPGLearner(Player):
     """A player who learns the best strategies through the q-learning
     algorithm.
-
-    This Q learner is quick to come to conclusions and doesn't care about the
-    future.
-
-    Names:
-
-    - Risky Q Learner: Original name by Geraint Palmer
     """
 
-    name = "Risky QLearner"
+    name = "DDPG Learner"
     classifier = {
         "memory_depth": float("inf"),  # Long memory
         "stochastic": True,
@@ -39,6 +34,7 @@ class RiskyQLearner(Player):
         """Initialises the player by picking a random strategy."""
 
         super().__init__()
+        self.learner = DDPG()
 
         # Set this explicitly, since the constructor of super will not pick it up
         # for any subclasses that do not override methods using random calls.
@@ -98,6 +94,7 @@ class RiskyQLearner(Player):
         """
         Performs the qlearning algorithm
         """
+        self.learner.learn()
         self.Qs[prev_state][action] = (1.0 - self.learning_rate) * self.Qs[
             prev_state
         ][action] + self.learning_rate * (
