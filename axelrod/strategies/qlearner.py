@@ -164,3 +164,8 @@ class CautiousQLearner(RiskyQLearner):
     name = "Cautious QLearner"
     learning_rate = 0.1
     discount_rate = 0.1
+
+class BalancedQLearner(RiskyQLearner):
+    name = "Balanced QLearner"
+    learning_rate = 0.5
+    discount_rate = 0.4

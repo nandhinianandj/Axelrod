@@ -96,6 +96,8 @@ cheating_strategies = [
 
 ordinary_strategies = strategies  # This is a legacy and will be removed
 
+rlf_strategies = [ArrogantQLearner, CautiousQLearner, HesitantQLearner, RiskyQLearner,
+        BalancedQLearner]
 
 def filtered_strategies(filterset, strategies=all_strategies):
     """

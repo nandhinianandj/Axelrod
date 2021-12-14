@@ -215,7 +215,9 @@ from .qlearner import (
     CautiousQLearner,
     HesitantQLearner,
     RiskyQLearner,
+    BalancedQLearner
 )
+
 from .rand import Random
 from .resurrection import DoubleResurrection, Resurrection
 from .retaliate import (
