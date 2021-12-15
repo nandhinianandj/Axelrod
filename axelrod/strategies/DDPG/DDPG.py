@@ -2,7 +2,6 @@ import argparse
 import sys
 import matplotlib
 matplotlib.use("TkAgg")
-import gym
 import torch
 from utils import *
 from core import *

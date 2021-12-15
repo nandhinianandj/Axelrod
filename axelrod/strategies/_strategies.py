@@ -218,7 +218,7 @@ from .qlearner import (
     BalancedQLearner
 )
 
-from ddpg import DDPGLearner
+from .ddpg import DDPGLearner
 
 from .rand import Random
 from .resurrection import DoubleResurrection, Resurrection

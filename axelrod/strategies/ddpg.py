@@ -4,7 +4,7 @@ from typing import Dict, Union
 from axelrod.action import Action, actions_to_str
 from axelrod.player import Player
 
-from DDPG import DDPG
+from .DDPG import DDPG
 
 Score = Union[int, float]
 
