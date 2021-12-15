@@ -1,19 +1,16 @@
 import argparse
 import sys
-import matplotlib
-matplotlib.use("TkAgg")
 import torch
-from utils import *
-from core import *
 from torch.utils.tensorboard import SummaryWriter
-from matplotlib import pyplot as plt, use
 import yaml
 from datetime import datetime
 import torch.nn as nn
 import torch
 import time
 from copy import deepcopy
-from memory import Memory
+from .utils import *
+from .core import *
+from .memory import Memory
 
 #########Creation des modéles afin de de pouvoir rajouter la Batch Normalization
 
@@ -32,8 +29,8 @@ class Actor(nn.Module):
                 layer.append(nn.BatchNorm1d(x))
             layer.append(activation())
             if dropout > 0:
-                layer.append(nn.Dropout(dropout)) 
-            inSize=x  
+                layer.append(nn.Dropout(dropout))
+            inSize=x
         layer.append(nn.Linear(inSize, n_action))
         layer.append(nn.Tanh())
         if finalActivation:
@@ -58,13 +55,13 @@ class Critic(nn.Module):
                 layer.append(nn.BatchNorm1d(num_features=x))
             layer.append(activation())
             if dropout > 0:
-                layer.append(nn.Dropout(dropout)) 
+                layer.append(nn.Dropout(dropout))
             inSize = x
         layer.append(nn.Linear(inSize, 1))
         if finalActivation:
             layer.append(finalActivation())
         self.critic=nn.Sequential(*layer)
-    
+
     def forward(self,obs,action):
         return self.critic(torch.cat([obs,action],dim=-1)).squeeze(-1)
 
@@ -80,7 +77,7 @@ class ActorCritic(nn.Module):
 
 class DDPG(object):
     def __init__(self, env,opt,layers=[30,30],sigma=0.15,activation=nn.LeakyReLU,use_batch_norm=False):
-        #Environment 
+        #Environment
         self.env=env
         self.opt=opt
         self.action_space = env.action_space
@@ -118,16 +115,16 @@ class DDPG(object):
         self.loss=nn.SmoothL1Loss()
         self.policy_optim=torch.optim.Adam(self.model.policy.parameters(),weight_decay=0.0,lr=opt.lr_pi)
         self.q_optim=torch.optim.Adam(self.model.q.parameters(),weight_decay=0.0,lr=opt.lr_q)
-    
+
         # sauvegarde du modèle
-    
+
     def save(self,outputDir):
         pass
 
     # chargement du modèle.
     def load(self,inputDir):
         pass
-    
+
     def act(self,obs):
         with torch.no_grad():
             self.model.policy.eval()
@@ -137,7 +134,7 @@ class DDPG(object):
             #action+=self.sigma*torch.randn(self.n_action)
             self.model.policy.train()
         return torch.clamp(action,min=self.low,max=self.high).squeeze(0).numpy()
-    
+
     def store(self,ob, action, new_ob, reward, done, it):
         # Si l'agent est en mode de test, on n'enregistre pas la transition
         if not self.test:
@@ -195,7 +192,7 @@ class DDPG(object):
                     for param, param_target in zip(self.model.parameters(), self.target.parameters()):
                         param_target.data.mul_(self.ru)
                         param_target.data.add_((1 - self.ru) * param.data)
-            
+
 
 if __name__ == '__main__':
     env, config, outdir, logger = init('./configs/config_mountainCar.yaml', "DDPG")
@@ -252,7 +249,7 @@ if __name__ == '__main__':
         while True:
             if verbose:
                 env.render()
-            
+
 
             action = agent.act(ob)
             new_ob, reward, done, _ = env.step(action)
@@ -271,7 +268,7 @@ if __name__ == '__main__':
 
             if agent.timeToLearn(done):
                 agent.learn()
-            
+
             if done:
                 agent.N.reset()
                 print(str(i) + " rsum=" + str(rsum) + ", " + str(j) + " actions ")

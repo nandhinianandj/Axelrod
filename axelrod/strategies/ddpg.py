@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from typing import Dict, Union
+from easydict import EasyDict as edict
 
 from axelrod.action import Action, actions_to_str
 from axelrod.player import Player
@@ -34,7 +35,6 @@ class DDPGLearner(Player):
         """Initialises the player by picking a random strategy."""
 
         super().__init__()
-        self.learner = DDPG()
 
         # Set this explicitly, since the constructor of super will not pick it up
         # for any subclasses that do not override methods using random calls.
@@ -45,6 +45,10 @@ class DDPGLearner(Player):
         self.score = 0
         self.Qs = OrderedDict({"": OrderedDict(zip([C, D], [0, 0]))})
         self.Vs = OrderedDict({"": 0})
+        self.learner = DDPG.DDPG(env=edict({'Qs': self.Qs, 
+                                      'Vs': self.Vs,
+                                      'action_space': [C, D]}),
+                                      opt=edict({'maxLengthTrain': 5}))
         self.prev_state = ""
 
     def receive_match_attributes(self):
