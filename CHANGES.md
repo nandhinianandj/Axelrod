@@ -1,3 +1,11 @@
+# v4.13.1, 2024-10-02
+
+Mainly internal changes: move to pyproject.toml.
+
+- Move to pyproject.toml: https://github.com/Axelrod-Python/Axelrod/pull/1440
+
+https://github.com/Axelrod-Python/Axelrod/compare/v4.13.1..v4.13.0
+
 # v4.13.0, 2021-05-25
 
 Generalisation of games, new BurnBothEnds strategy, added CITATION.cff file,
@@ -205,7 +213,7 @@ https://github.com/Axelrod-Python/Axelrod/compare/v4.6.0...v4.5.0
 # v4.5.0, 2019-01-31
 
 Implemented algorithm for memory depth of Finite State Machines, some new
-strategies  and some minor internal improvements.
+strategies and some minor internal improvements.
 
 - Algorithm for memory depth of Finite State machines
   https://github.com/Axelrod-Python/Axelrod/pull/1233
@@ -397,7 +405,6 @@ New strategies, a minor bug fix and a small documentation improvement.
   https://github.com/Axelrod-Python/Axelrod/pull/1134
 - Fix minor bug in the fingerprints
   https://github.com/Axelrod-Python/Axelrod/pull/1140
-
 
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v3.9.0...v3.8.1
@@ -655,7 +662,6 @@ New strategies and internal refactoring/improvements
   https://github.com/Axelrod-Python/Axelrod/pull/1015
   https://github.com/Axelrod-Python/Axelrod/pull/1010
 
-
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v2.11.0...v2.12.0
 
@@ -681,7 +687,6 @@ internal refactoring,
   https://github.com/Axelrod-Python/Axelrod/pull/980
 - Implement an equality method on players:
   https://github.com/Axelrod-Python/Axelrod/pull/975
-
 
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v2.10.0...v2.11.0
@@ -800,7 +805,6 @@ and minor bug fixes.
 - Minor function rename:
   https://github.com/Axelrod-Python/Axelrod/pull/906
 
-
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v2.6.0...v2.7.0
 
@@ -887,7 +891,7 @@ https://github.com/Axelrod-Python/Axelrod/compare/v2.3.0...v2.4.0
 
 # v2.3.0, 2017-01-04
 
-Support for py3.6, new strategies, more tournament result information,  and
+Support for py3.6, new strategies, more tournament result information, and
 internal improvements.
 
 - Helpful list of short run time strategies
@@ -1017,11 +1021,9 @@ new strategies and PEP8.
   https://github.com/Axelrod-Python/Axelrod/pull/753
 - Players track state pairs:
   https://github.com/Axelrod-Python/Axelrod/pull/752
-- New strategies:
-      - StochasticCooperator (re introduced):
-        https://github.com/Axelrod-Python/Axelrod/pull/755
-      - SpitefulTitForTat
-        https://github.com/Axelrod-Python/Axelrod/pull/749
+- New strategies: - StochasticCooperator (re introduced):
+  https://github.com/Axelrod-Python/Axelrod/pull/755 - SpitefulTitForTat
+  https://github.com/Axelrod-Python/Axelrod/pull/749
 - PEP8:
   https://github.com/Axelrod-Python/Axelrod/pull/750
 
@@ -1105,7 +1107,6 @@ State distribution functions, new strategies and minor test fix.
 - Minor fix of a test that would sometimes fail due to floating point error.
   https://github.com/Axelrod-Python/Axelrod/pull/725
 
-
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v1.10.0...v1.11.0
 
@@ -1128,7 +1129,6 @@ conduct as well as minor fixes.
   https://github.com/Axelrod-Python/Axelrod/pull/716
 - Fix of link in docs:
   https://github.com/Axelrod-Python/Axelrod/pull/722
-
 
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v1.9.0...v1.10.0
@@ -1238,7 +1238,6 @@ New strategy, a bug fix and more explicit copyright notice
 Bug fix:
 
 - The finite state machines were not reseting state properly.
-
 
 Here are all the commits for this PR:
 https://github.com/Axelrod-Python/Axelrod/compare/v1.2.0...v1.3.0
