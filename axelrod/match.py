@@ -130,7 +130,8 @@ class Match(object):
         A boolean to show whether the deterministic cache should be updated.
         """
         return (
-            not self.noise
+            not self.is_stochastic
+            and not self.noise
             and self._cache.mutable
             and not (any(Classifiers["stochastic"](p) for p in self.players))
         )
@@ -182,25 +183,25 @@ class Match(object):
             turns = self.turns
         cache_key = (self.players[0], self.players[1])
 
-        if self._stochastic or not self._cached_enough_turns(cache_key, turns):
-            for p in self.players:
-                if self.reset:
-                    p.reset()
-                p.set_match_attributes(**self.match_attributes)
-                # Generate a random seed for the player, if stochastic
-                if Classifiers["stochastic"](p):
-                    p.set_seed(self._random.random_seed_int())
-            result = []
-            for _ in range(turns):
-                plays = self.simultaneous_play(
-                    self.players[0], self.players[1], self.noise
-                )
-                result.append(plays)
+        if self._cached_enough_turns(cache_key, turns):
+            return self._cache[cache_key][:turns]
 
-            if self._cache_update_required:
-                self._cache[cache_key] = result
-        else:
-            result = self._cache[cache_key][:turns]
+        for p in self.players:
+            if self.reset:
+                p.reset()
+            p.set_match_attributes(**self.match_attributes)
+            # Generate a random seed for the player, if stochastic
+            if Classifiers["stochastic"](p):
+                p.set_seed(self._random.random_seed_int())
+        result = []
+        for _ in range(turns):
+            plays = self.simultaneous_play(
+                self.players[0], self.players[1], self.noise
+            )
+            result.append(plays)
+
+        if self._cache_update_required:
+            self._cache[cache_key] = result
 
         self.result = result
         return result
