@@ -56,41 +56,40 @@ class Match(object):
             Random seed for reproducibility
         """
 
-        defaults = {
-            (True, True): (DEFAULT_TURNS, 0),
-            (True, False): (float("inf"), prob_end),
-            (False, True): (turns, 0),
-            (False, False): (turns, prob_end),
-        }
-        self.turns, self.prob_end = defaults[(turns is None, prob_end is None)]
+
+        self.turns, self.prob_end = turns, prob_end
+        if prob_end is None:
+            self.prob_end = 0
+        if turns is None:
+            self.turns = float("inf")
+        if turns is None and prob_end is None:
+            self.turns = DEFAULT_TURNS
 
         self.result = []
         self.noise = noise
 
-        self.set_seed(seed)
-
+        self.game = game
         if game is None:
             self.game = Game()
-        else:
-            self.game = game
 
+        self._cache = deterministic_cache
         if deterministic_cache is None:
             self._cache = DeterministicCache()
-        else:
-            self._cache = deterministic_cache
 
+        self.match_attributes = match_attributes
         if match_attributes is None:
+            # known_turns = inf if both prob_end and turns are None, else turns
             known_turns = self.turns if prob_end is None else float("inf")
             self.match_attributes = {
                 "length": known_turns,
                 "game": self.game,
                 "noise": self.noise,
             }
-        else:
-            self.match_attributes = match_attributes
 
         self.players = list(players)
         self.reset = reset
+
+        self.set_seed(seed)
 
     def set_seed(self, seed):
         """Sets a random seed for the Match, for reproducibility. Initializes
