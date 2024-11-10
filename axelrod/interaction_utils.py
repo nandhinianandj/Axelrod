@@ -117,7 +117,7 @@ def compute_state_distribution(interactions):
 
 def compute_normalised_state_distribution(interactions):
     """
-    Returns the normalized count of each state for a set of interactions.
+    Returns the normalised count of each state for a set of interactions.
 
     Parameters
     ----------
@@ -127,8 +127,8 @@ def compute_normalised_state_distribution(interactions):
 
     Returns
     ----------
-    normalized_count : Counter Object
-        Dictionary where the keys are the states and the values are a normalized
+    normalised_count : Counter Object
+        Dictionary where the keys are the states and the values are a normalised
         count of the number of times that state occurs.
     """
     if not interactions:
@@ -137,10 +137,10 @@ def compute_normalised_state_distribution(interactions):
     interactions_count = Counter(interactions)
     total = sum(interactions_count.values(), 0)
 
-    normalized_count = Counter(
+    normalised_count = Counter(
         {key: value / total for key, value in interactions_count.items()}
     )
-    return normalized_count
+    return normalised_count
 
 
 def compute_state_to_action_distribution(interactions):
@@ -213,14 +213,14 @@ def compute_normalised_state_to_action_distribution(interactions):
     -------
     normalised_state_to_C_distributions : List of Counter Object
         List of Counter objects where the keys are the states and actions and
-        the values the normalized counts. The first/second Counter corresponds
+        the values the normalised counts. The first/second Counter corresponds
         to the first/second player.
     """
     if not interactions:
         return None
 
     distribution = compute_state_to_action_distribution(interactions)
-    normalized_distribution = []
+    normalised_distribution = []
     for player in range(2):
         counter = {}
         for state in [(C, C), (C, D), (D, C), (D, D)]:
@@ -232,8 +232,8 @@ def compute_normalised_state_to_action_distribution(interactions):
                     counter[(state, C)] = C_count / (C_count + D_count)
                 if D_count > 0:
                     counter[(state, D)] = D_count / (C_count + D_count)
-        normalized_distribution.append(Counter(counter))
-    return normalized_distribution
+        normalised_distribution.append(Counter(counter))
+    return normalised_distribution
 
 
 def sparkline(actions, c_symbol="█", d_symbol=" "):
