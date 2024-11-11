@@ -184,7 +184,8 @@ class Match(object):
         cache_key = (self.players[0], self.players[1])
 
         if self._cached_enough_turns(cache_key, turns):
-            return self._cache[cache_key][:turns]
+            self.result = self._cache[cache_key][:turns]
+            return self.result
 
         for p in self.players:
             if self.reset:
@@ -202,7 +203,7 @@ class Match(object):
             self._cache[cache_key] = result
 
         self.result = result
-        return result
+        return self.result
 
     def scores(self):
         """Returns the scores of the previous Match plays."""
