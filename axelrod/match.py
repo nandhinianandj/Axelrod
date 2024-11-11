@@ -196,7 +196,9 @@ class Match(object):
                 p.set_seed(self._random.random_seed_int())
         result = []
         for _ in range(turns):
-            plays = self.simultaneous_play(self.players[0], self.players[1], self.noise)
+            plays = self.simultaneous_play(
+                self.players[0], self.players[1], self.noise
+            )
             result.append(plays)
 
         if self._cache_update_required:
