@@ -56,7 +56,6 @@ class Match(object):
             Random seed for reproducibility
         """
 
-
         self.turns, self.prob_end = turns, prob_end
         if prob_end is None:
             self.prob_end = 0
