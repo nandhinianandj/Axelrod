@@ -171,7 +171,7 @@ class TestMatchGenerator(unittest.TestCase):
             game=test_game,
             repetitions=repetitions,
         )
-        chunks = list(rr.build_match_chunks())
+        chunks = [chunk.as_tuple() for chunk in rr.build_match_chunks()]
         match_definitions = [
             tuple(list(index_pair) + [repetitions])
             for (index_pair, match_params, repetitions, _) in chunks
@@ -239,7 +239,7 @@ class TestMatchGenerator(unittest.TestCase):
             edges=cycle,
             repetitions=repetitions,
         )
-        chunks = list(rr.build_match_chunks())
+        chunks = [chunk.as_tuple() for chunk in rr.build_match_chunks()]
         match_definitions = [
             tuple(list(index_pair) + [repetitions])
             for (index_pair, match_params, repetitions, _) in chunks
