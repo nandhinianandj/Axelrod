@@ -95,7 +95,12 @@ class MatchGenerator(object):
         for index_pair in edges:
             match_params = self.build_single_match_params()
             r = next(self.random_generator)
-            yield MatchChunk(index_pair=index_pair, match_params=match_params, repetitions=self.repetitions, seed=r)
+            yield MatchChunk(
+                index_pair=index_pair,
+                match_params=match_params,
+                repetitions=self.repetitions,
+                seed=r,
+            )
 
     def build_single_match_params(self):
         """

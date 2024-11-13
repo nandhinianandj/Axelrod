@@ -663,7 +663,9 @@ class TestTournament(unittest.TestCase):
                 for player2_index in range(player1_index, len(self.players)):
                     index_pair = (player1_index, player2_index)
                     match_params = {"turns": turns, "game": self.game}
-                    yield MatchChunk(index_pair, match_params, self.test_repetitions, 0)
+                    yield MatchChunk(
+                        index_pair, match_params, self.test_repetitions, 0
+                    )
 
         chunk_generator = make_chunk_generator()
         interactions = {}
