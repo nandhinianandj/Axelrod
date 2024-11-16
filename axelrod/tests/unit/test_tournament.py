@@ -24,7 +24,7 @@ from axelrod.tests.property import (
     strategy_lists,
     tournaments,
 )
-from axelrod.tournament import _close_objects, MatchChunk
+from axelrod.tournament import MatchChunk, _close_objects
 
 C, D = axl.Action.C, axl.Action.D
 
