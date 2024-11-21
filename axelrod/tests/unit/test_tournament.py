@@ -24,7 +24,7 @@ from axelrod.tests.property import (
     strategy_lists,
     tournaments,
 )
-from axelrod.tournament import _close_objects
+from axelrod.tournament import MatchChunk, _close_objects
 
 C, D = axl.Action.C, axl.Action.D
 
@@ -663,7 +663,9 @@ class TestTournament(unittest.TestCase):
                 for player2_index in range(player1_index, len(self.players)):
                     index_pair = (player1_index, player2_index)
                     match_params = {"turns": turns, "game": self.game}
-                    yield (index_pair, match_params, self.test_repetitions, 0)
+                    yield MatchChunk(
+                        index_pair, match_params, self.test_repetitions, 0
+                    )
 
         chunk_generator = make_chunk_generator()
         interactions = {}

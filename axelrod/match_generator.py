@@ -1,4 +1,19 @@
+from dataclasses import dataclass
+from typing import Any, Dict, Iterator, Tuple
+
 from axelrod.random_ import BulkRandomGenerator
+
+
+@dataclass
+class MatchChunk(object):
+    index_pair: Tuple[int]
+    match_params: Dict[str, Any]
+    repetitions: int
+    seed: BulkRandomGenerator
+
+    def as_tuple(self) -> Tuple:
+        """Kept for legacy reasons"""
+        return (self.index_pair, self.match_params, self.repetitions, self.seed)
 
 
 class MatchGenerator(object):
@@ -62,7 +77,7 @@ class MatchGenerator(object):
     def __len__(self):
         return self.size
 
-    def build_match_chunks(self):
+    def build_match_chunks(self) -> Iterator[MatchChunk]:
         """
         A generator that returns player index pairs and match parameters for a
         round robin tournament.
@@ -80,7 +95,12 @@ class MatchGenerator(object):
         for index_pair in edges:
             match_params = self.build_single_match_params()
             r = next(self.random_generator)
-            yield (index_pair, match_params, self.repetitions, r)
+            yield MatchChunk(
+                index_pair=index_pair,
+                match_params=match_params,
+                repetitions=self.repetitions,
+                seed=r,
+            )
 
     def build_single_match_params(self):
         """

@@ -16,7 +16,7 @@ from axelrod.player import Player
 
 from .game import Game
 from .match import Match
-from .match_generator import MatchGenerator
+from .match_generator import MatchChunk, MatchGenerator
 from .result_set import ResultSet
 
 C, D = Action.C, Action.D
@@ -427,7 +427,7 @@ class Tournament(object):
         done_queue.put("STOP")
         return True
 
-    def _play_matches(self, chunk, build_results=True):
+    def _play_matches(self, chunk: Match, build_results: bool = True):
         """
         Play matches in a given chunk.
 
@@ -446,14 +446,13 @@ class Tournament(object):
                 (0, 1) -> [(C, D), (D, C),...]
         """
         interactions = defaultdict(list)
-        index_pair, match_params, repetitions, seed = chunk
-        p1_index, p2_index = index_pair
+        p1_index, p2_index = chunk.index_pair
         player1 = self.players[p1_index].clone()
         player2 = self.players[p2_index].clone()
-        match_params["players"] = (player1, player2)
-        match_params["seed"] = seed
-        match = Match(**match_params)
-        for _ in range(repetitions):
+        chunk.match_params["players"] = (player1, player2)
+        chunk.match_params["seed"] = chunk.seed
+        match = Match(**chunk.match_params)
+        for _ in range(chunk.repetitions):
             match.play()
 
             if build_results:
@@ -461,7 +460,7 @@ class Tournament(object):
             else:
                 results = None
 
-            interactions[index_pair].append([match.result, results])
+            interactions[chunk.index_pair].append([match.result, results])
         return interactions
 
     def _calculate_results(self, interactions):
