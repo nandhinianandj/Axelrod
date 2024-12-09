@@ -1,7 +1,7 @@
 import unittest
 
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import HealthCheck, given, settings
 from hypothesis.extra.numpy import array_shapes, arrays
 from hypothesis.strategies import integers
 
@@ -123,7 +123,7 @@ class TestAsymmetricGame(unittest.TestCase):
         self.assertEqual(expected_repr, str(asymgame))
 
     @given(asymgame1=asymmetric_games(), asymgame2=asymmetric_games())
-    @settings(max_examples=5)
+    @settings(max_examples=5, suppress_health_check=(HealthCheck.too_slow,))
     def test_equality(self, asymgame1, asymgame2):
         """Tests equality of AsymmetricGames based on their matrices."""
         self.assertFalse(asymgame1 == "foo")

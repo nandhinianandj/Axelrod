@@ -123,3 +123,14 @@ class TestLimitedHistory(unittest.TestCase):
             h.state_distribution,
             Counter({(D, D): 1, (C, D): 1, (D, C): 1, (C, C): 0}),
         )
+
+    def test_extend(self):
+        h1 = LimitedHistory(3, plays=[C, C, D], coplays=[C, C, C])
+        self.assertEqual(list(h1), [C, C, D])
+        h1.extend([C, C], [D, D])
+        self.assertEqual(list(h1), [D, C, C])
+        h1.extend([D, C], [D, D])
+        self.assertEqual(list(h1), [C, D, C])
+        h1.memory_depth = 4
+        h1.extend([D, C], [D, D])
+        self.assertEqual(list(h1), [D, C, D, C])
