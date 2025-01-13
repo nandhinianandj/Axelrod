@@ -1,5 +1,5 @@
 import pathlib
-from typing import List, Union
+from typing import Any, Callable, List, Optional, Union
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ from numpy import arange, median, nan_to_num
 from .load_data_ import axl_filename
 from .result_set import ResultSet
 
-titleType = List[str]
+titleType = str
 namesType = List[str]
 dataType = List[List[Union[int, float]]]
 
@@ -25,8 +25,11 @@ class Plot(object):
         self,
         data: dataType,
         names: namesType,
-        title: titleType = None,
-        ax: matplotlib.axes.SubplotBase = None,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
+        get_figure: Callable[
+            [matplotlib.axes.Axes], Union[matplotlib.figure.Figure, Any, None]
+        ] = lambda ax: ax.get_figure(),
     ) -> matplotlib.figure.Figure:
         """For making violinplots."""
 
@@ -35,7 +38,11 @@ class Plot(object):
         else:
             ax = ax
 
-        figure = ax.get_figure()
+        figure = get_figure(ax)
+        if not isinstance(figure, matplotlib.figure.Figure):
+            raise RuntimeError(
+                "get_figure unexpectedly returned a non-figure object"
+            )
         width = max(self.num_players / 3, 12)
         height = width / 2
         spacing = 4
@@ -50,7 +57,7 @@ class Plot(object):
         )
         ax.set_xticks(positions)
         ax.set_xticklabels(names, rotation=90)
-        ax.set_xlim([0, spacing * (self.num_players + 1)])
+        ax.set_xlim((0, spacing * (self.num_players + 1)))
         ax.tick_params(axis="both", which="both", labelsize=8)
         if title:
             ax.set_title(title)
@@ -76,7 +83,9 @@ class Plot(object):
         return [str(n) for n in self.result_set.ranked_names]
 
     def boxplot(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """For the specific mean score boxplot."""
         data = self._boxplot_dataset
@@ -98,7 +107,9 @@ class Plot(object):
         return wins, ranked_names
 
     def winplot(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """Plots the distributions for the number of wins for each strategy."""
 
@@ -126,7 +137,9 @@ class Plot(object):
         return diffs, ranked_names
 
     def sdvplot(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """Score difference violin plots to visualize the distributions of how
         players attain their payoffs."""
@@ -143,7 +156,9 @@ class Plot(object):
         ]
 
     def lengthplot(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """For the specific match length boxplot."""
         data = self._lengthplot_dataset
@@ -174,9 +189,12 @@ class Plot(object):
         self,
         data: dataType,
         names: namesType,
-        title: titleType = None,
-        ax: matplotlib.axes.SubplotBase = None,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
         cmap: str = "viridis",
+        get_figure: Callable[
+            [matplotlib.axes.Axes], Union[matplotlib.figure.Figure, Any, None]
+        ] = lambda ax: ax.get_figure(),
     ) -> matplotlib.figure.Figure:
         """Generic heatmap plot"""
 
@@ -185,7 +203,11 @@ class Plot(object):
         else:
             ax = ax
 
-        figure = ax.get_figure()
+        figure = get_figure(ax)
+        if not isinstance(figure, matplotlib.figure.Figure):
+            raise RuntimeError(
+                "get_figure unexpectedly returned a non-figure object"
+            )
         width = max(self.num_players / 4, 12)
         height = width
         figure.set_size_inches(width, height)
@@ -202,7 +224,9 @@ class Plot(object):
         return figure
 
     def pdplot(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """Payoff difference heatmap to visualize the distributions of how
         players attain their payoffs."""
@@ -210,7 +234,9 @@ class Plot(object):
         return self._payoff_heatmap(matrix, names, title=title, ax=ax)
 
     def payoff(
-        self, title: titleType = None, ax: matplotlib.axes.SubplotBase = None
+        self,
+        title: Optional[titleType] = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
     ) -> matplotlib.figure.Figure:
         """Payoff heatmap to visualize the distributions of how
         players attain their payoffs."""
@@ -223,9 +249,12 @@ class Plot(object):
     def stackplot(
         self,
         eco,
-        title: titleType = None,
+        title: Optional[titleType] = None,
         logscale: bool = True,
-        ax: matplotlib.axes.SubplotBase = None,
+        ax: Optional[matplotlib.axes.Axes] = None,
+        get_figure: Callable[
+            [matplotlib.axes.Axes], Union[matplotlib.figure.Figure, Any, None]
+        ] = lambda ax: ax.get_figure(),
     ) -> matplotlib.figure.Figure:
 
         populations = eco.population_sizes
@@ -235,7 +264,11 @@ class Plot(object):
         else:
             ax = ax
 
-        figure = ax.get_figure()
+        figure = get_figure(ax)
+        if not isinstance(figure, matplotlib.figure.Figure):
+            raise RuntimeError(
+                "get_figure unexpectedly returned a non-figure object"
+            )
         turns = range(len(populations))
         pops = [
             [populations[iturn][ir] for iturn in turns]
@@ -247,7 +280,7 @@ class Plot(object):
         ax.yaxis.set_label_position("right")
         ax.yaxis.labelpad = 25.0
 
-        ax.set_ylim([0.0, 1.0])
+        ax.set_ylim((0.0, 1.0))
         ax.set_ylabel("Relative population size")
         ax.set_xlabel("Turn")
         if title is not None:
