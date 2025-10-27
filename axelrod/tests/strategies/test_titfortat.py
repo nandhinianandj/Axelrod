@@ -1,10 +1,12 @@
 """Tests for the tit for tat strategies."""
+
 import copy
+
+from hypothesis import given, settings
+from hypothesis.strategies import integers
 
 import axelrod as axl
 from axelrod.tests.property import strategy_lists
-from hypothesis import given, settings
-from hypothesis.strategies import integers
 
 from .test_player import TestPlayer
 
@@ -1316,3 +1318,28 @@ class TestRandomTitForTat(TestPlayer):
         for p in [0, 1]:
             player = axl.RandomTitForTat(p=p)
             self.assertFalse(axl.Classifiers["stochastic"](player))
+
+
+class TestBurnBothEnds(TestPlayer):
+    name = "Burn Both Ends"
+    player = axl.BurnBothEnds
+    expected_classifier = {
+        "memory_depth": 1,
+        "stochastic": True,
+        "makes_use_of": set(),
+        "inspects_source": False,
+        "manipulates_source": False,
+        "manipulates_state": False,
+    }
+
+    def test_vs_cooperator(self):
+        actions = [(C, C), (C, C), (C, C), (D, C), (C, C)]
+        self.versus_test(axl.Cooperator(), expected_actions=actions, seed=1)
+
+    def test_vs_cooperator2(self):
+        actions = [(C, C), (C, C), (C, C), (C, C), (C, C)]
+        self.versus_test(axl.Cooperator(), expected_actions=actions, seed=2)
+
+    def test_vs_defector(self):
+        actions = [(C, D), (D, D), (D, D), (D, D), (D, D)]
+        self.versus_test(axl.Defector(), expected_actions=actions)

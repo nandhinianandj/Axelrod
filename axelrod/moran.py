@@ -5,6 +5,7 @@ from typing import Callable, List, Optional, Set, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from axelrod import DEFAULT_TURNS, EvolvablePlayer, Game, Player
 from axelrod.deterministic_cache import DeterministicCache
 from axelrod.graph import Graph, complete_graph
@@ -17,7 +18,7 @@ class MoranProcess(object):
         self,
         players: List[Player],
         turns: int = DEFAULT_TURNS,
-        prob_end: float = None,
+        prob_end: Optional[float] = None,
         noise: float = 0,
         game: Game = None,
         deterministic_cache: DeterministicCache = None,
@@ -25,7 +26,7 @@ class MoranProcess(object):
         mode: str = "bd",
         interaction_graph: Graph = None,
         reproduction_graph: Graph = None,
-        fitness_transformation: Callable = None,
+        fitness_transformation: Optional[Callable] = None,
         mutation_method="transition",
         stop_on_fixation=True,
         seed=None,
@@ -174,7 +175,7 @@ class MoranProcess(object):
         self.populations = [self.population_distribution()]
 
     def fitness_proportionate_selection(
-        self, scores: List, fitness_transformation: Callable = None
+        self, scores: List, fitness_transformation: Optional[Callable] = None
     ) -> int:
         """Randomly selects an individual proportionally to score.
 
@@ -228,7 +229,7 @@ class MoranProcess(object):
         # Just clone the player
         return self.players[index].clone()
 
-    def death(self, index: int = None) -> int:
+    def death(self, index: Optional[int] = None) -> int:
         """
         Selects the player to be removed.
 
@@ -257,7 +258,7 @@ class MoranProcess(object):
             i = self.index[vertex]
         return i
 
-    def birth(self, index: int = None) -> int:
+    def birth(self, index: Optional[int] = None) -> int:
         """The birth event.
 
         Parameters
@@ -348,7 +349,6 @@ class MoranProcess(object):
         # The other calculations are unnecessary
         if self.mode == "db":
             source = self.index[self.dead]
-            self.dead = None
             sources = sorted(self.interaction_graph.out_vertices(source))
         else:
             # birth-death is global

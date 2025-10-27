@@ -5,8 +5,9 @@ import unittest
 import warnings
 from typing import Any, Text
 
-import axelrod as axl
 import yaml
+
+import axelrod as axl
 from axelrod.classifier import (
     Classifier,
     Classifiers,
@@ -89,7 +90,7 @@ class TestClassification(unittest.TestCase):
         warnings.simplefilter("default", category=UserWarning)
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(Classifiers["memory_depth"](axl.TitForTat), 1)
-            self.assertEquals(len(w), 1)
+            self.assertEqual(len(w), 1)
 
     def test_key_error_on_uknown_classifier(self):
         with self.assertRaises(KeyError):
@@ -302,6 +303,7 @@ class TestStrategies(unittest.TestCase):
     def test_long_run_strategies(self):
         long_run_time_strategies = [
             axl.DBS,
+            axl.EvolvedAttention,
             axl.MetaMajority,
             axl.MetaMajorityFiniteMemory,
             axl.MetaMajorityLongMemory,

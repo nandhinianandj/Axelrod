@@ -1,4 +1,5 @@
 """Tests for Hidden Markov Model Strategies."""
+
 import unittest
 
 import axelrod as axl
@@ -266,7 +267,7 @@ class TestEvolvableHMMPlayer(unittest.TestCase):
 
     def test_create_vector_bounds(self):
         num_states = 4
-        size = 2 * num_states ** 2 + num_states + 1
+        size = 2 * num_states**2 + num_states + 1
 
         player = self.player_class(num_states=num_states, seed=1)
         lb, ub = player.create_vector_bounds()

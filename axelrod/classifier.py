@@ -14,6 +14,7 @@ from typing import (
 )
 
 import yaml
+
 from axelrod.makes_use_of import makes_use_of
 from axelrod.player import Player
 
@@ -184,7 +185,7 @@ class _Classifiers(object):
             raise KeyError("Unknown classifier")
 
         def classify_player_for_this_classifier(
-            player: Union[Player, Type[Player]]
+            player: Union[Player, Type[Player]],
         ) -> Any:
             def try_lookup() -> Any:
                 try:

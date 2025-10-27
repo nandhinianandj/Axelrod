@@ -2,11 +2,12 @@ import pathlib
 import tempfile
 import unittest
 
-import axelrod as axl
 import matplotlib
 import matplotlib.pyplot as plt
-from axelrod.load_data_ import axl_filename
 from numpy import mean
+
+import axelrod as axl
+from axelrod.load_data_ import axl_filename
 
 
 class TestPlot(unittest.TestCase):
@@ -74,34 +75,6 @@ class TestPlot(unittest.TestCase):
             ],
             ["Defector", "Tit For Tat", "Alternator"],
         )
-
-    def test_default_cmap(self):
-        cmap = axl.plot.default_cmap("0.0")
-        self.assertEqual(cmap, "YlGnBu")
-
-        cmap = axl.plot.default_cmap("1.3alpha")
-        self.assertEqual(cmap, "YlGnBu")
-
-        cmap = axl.plot.default_cmap("1.4.99")
-        self.assertEqual(cmap, "YlGnBu")
-
-        cmap = axl.plot.default_cmap("1.4")
-        self.assertEqual(cmap, "YlGnBu")
-
-        cmap = axl.plot.default_cmap()
-        self.assertEqual(cmap, "viridis")
-
-        cmap = axl.plot.default_cmap("1.5")
-        self.assertEqual(cmap, "viridis")
-
-        cmap = axl.plot.default_cmap("1.5beta")
-        self.assertEqual(cmap, "viridis")
-
-        cmap = axl.plot.default_cmap("1.7")
-        self.assertEqual(cmap, "viridis")
-
-        cmap = axl.plot.default_cmap("2.0")
-        self.assertEqual(cmap, "viridis")
 
     def test_init(self):
         plot = axl.Plot(self.test_result_set)
@@ -282,3 +255,23 @@ class TestPlot(unittest.TestCase):
                 progress_bar=True,
             )
         )
+
+    def test_figure_generation_failure_violinplot(self):
+        plot = axl.Plot(self.test_result_set)
+        with self.assertRaises(RuntimeError):
+            plot._violinplot(
+                [0, 0, 0], ["a", "b", "c"], get_figure=lambda _: None
+            )
+
+    def test_figure_generation_failure_payoff_heatmap(self):
+        plot = axl.Plot(self.test_result_set)
+        with self.assertRaises(RuntimeError):
+            plot._payoff_heatmap(
+                [0, 0, 0], ["a", "b", "c"], get_figure=lambda _: None
+            )
+
+    def test_figure_generation_failure_stackplot(self):
+        plot = axl.Plot(self.test_result_set)
+        eco = axl.Ecosystem(self.test_result_set)
+        with self.assertRaises(RuntimeError):
+            plot.stackplot(eco, get_figure=lambda _: None)

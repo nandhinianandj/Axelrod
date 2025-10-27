@@ -1,9 +1,10 @@
 """
 A module for creating hypothesis based strategies for property based testing
 """
+
 import itertools
 
-import axelrod as axl
+from hypothesis.extra.numpy import arrays
 from hypothesis.strategies import (
     composite,
     floats,
@@ -11,6 +12,8 @@ from hypothesis.strategies import (
     lists,
     sampled_from,
 )
+
+import axelrod as axl
 
 
 @composite
@@ -360,7 +363,7 @@ def games(draw, prisoners_dilemma=True, max_value=100):
 
     if prisoners_dilemma:
         s_upper_bound = max_value - 4  # Ensures there is enough room
-        s = draw(integers(max_value=s_upper_bound))
+        s = draw(integers(min_value=0, max_value=s_upper_bound))
 
         t_lower_bound = s + 3  # Ensures there is enough room
         t = draw(integers(min_value=t_lower_bound, max_value=max_value))
@@ -381,3 +384,16 @@ def games(draw, prisoners_dilemma=True, max_value=100):
 
     game = axl.Game(r=r, s=s, t=t, p=p)
     return game
+
+
+@composite
+def asymmetric_games(draw, valid=True):
+    """Hypothesis decorator to draw a random asymmetric game."""
+
+    rows = draw(integers(min_value=2, max_value=255))
+    cols = draw(integers(min_value=2, max_value=255))
+
+    A = draw(arrays(int, (rows, cols)))
+    B = draw(arrays(int, (cols, rows)))
+
+    return axl.AsymmetricGame(A, B)

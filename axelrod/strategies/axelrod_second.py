@@ -7,6 +7,7 @@ tournament by the given author.
 from typing import List
 
 import numpy as np
+
 from axelrod.action import Action
 from axelrod.interaction_utils import compute_final_score
 from axelrod.player import Player
@@ -204,7 +205,6 @@ class SecondByGladstein(Player):
 
 
 class SecondByTranquilizer(Player):
-
     """
     Submitted to Axelrod's second tournament by Craig Feathers
 
@@ -341,7 +341,6 @@ class SecondByTranquilizer(Player):
         self.dict = {C: 0, D: 1}
 
     def update_state(self, opponent):
-
         """
         Calculates the ratio values for the one_turn_after_good_defection_ratio,
         two_turns_after_good_defection_ratio and the probability values,
@@ -442,16 +441,16 @@ class SecondByGrofman(Player):
     1. First it cooperates on the first two rounds
     2. For rounds 3-7 inclusive, it plays the same as the opponent's last move
     3. Thereafter, it applies the following logic, looking at its memory of the
-       last 8\* rounds (ignoring the most recent round).
+       last 8\\* rounds (ignoring the most recent round).
 
       - If its own previous move was C and the opponent has defected less than
-        3 times in the last 8\* rounds, cooperate
+        3 times in the last 8\\* rounds, cooperate
       - If its own previous move was C and the opponent has defected 3 or
-        more times in the last 8\* rounds, defect
+        more times in the last 8\\* rounds, defect
       - If its own previous move was D and the opponent has defected only once
-        or not at all in the last 8\* rounds, cooperate
+        or not at all in the last 8\\* rounds, cooperate
       - If its own previous move was D and the opponent has defected more than
-        once in the last 8\* rounds, defect
+        once in the last 8\\* rounds, defect
 
     The code looks at the first 7 of the last 8 rounds, ignoring the most
     recent round.
@@ -1349,9 +1348,9 @@ class SecondByHarrington(Player):
         if self.detect_streak(opponent.history[-1]):
             return self.try_return(D, inc_parity=True)
         if self.detect_parity_streak(opponent.history[-1]):
-            self.parity_streak[
-                self.parity_bit
-            ] = 0  # Reset `parity_streak` when we hit the limit.
+            self.parity_streak[self.parity_bit] = (
+                0  # Reset `parity_streak` when we hit the limit.
+            )
             self.parity_hits += (
                 1  # Keep track of how many times we hit the limit.
             )
@@ -1661,7 +1660,7 @@ class SecondByBlack(Player):
         recent_history = opponent.history[-5:]
 
         did_d = np.vectorize(lambda action: int(action == D))
-        number_defects = np.sum(did_d(recent_history))
+        number_defects = sum(did_d(recent_history))
 
         return self._random.random_choice(self.prob_coop[number_defects])
 
@@ -1774,7 +1773,7 @@ class SecondByRichardHufford(Player):
             return C
 
         proportion_agree = self.num_agreements / turn
-        last_four_num = np.sum(self.last_four_agreements)
+        last_four_num = sum(self.last_four_agreements)
         if proportion_agree > 0.9 and last_four_num >= 4:
             return C
         elif proportion_agree >= 0.625 and last_four_num >= 2:

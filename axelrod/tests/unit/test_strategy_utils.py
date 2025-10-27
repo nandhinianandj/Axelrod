@@ -1,5 +1,9 @@
 """Tests for the strategy utils."""
+
 import unittest
+
+from hypothesis import HealthCheck, given, settings
+from hypothesis.strategies import integers, lists, sampled_from
 
 import axelrod as axl
 from axelrod._strategy_utils import (
@@ -7,8 +11,6 @@ from axelrod._strategy_utils import (
     recursive_thue_morse,
     thue_morse_generator,
 )
-from hypothesis import given, settings
-from hypothesis.strategies import integers, lists, sampled_from
 
 C, D = axl.Action.C, axl.Action.D
 
@@ -18,7 +20,7 @@ class TestDetectCycle(unittest.TestCase):
         cycle=lists(sampled_from([C, D]), min_size=2, max_size=10),
         period=integers(min_value=3, max_value=10),
     )
-    @settings(max_examples=5)
+    @settings(max_examples=5, suppress_health_check=(HealthCheck.too_slow,))
     def test_finds_cycle(self, cycle, period):
         history = cycle * period
         detected = detect_cycle(history)

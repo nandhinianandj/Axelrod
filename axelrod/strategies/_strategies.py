@@ -20,6 +20,9 @@ annotated as to avoid some static testing. For example:
     )
     # isort:skip_file
 """
+
+import warnings
+
 from .adaptive import Adaptive
 from .adaptor import AdaptorBrief, AdaptorLong
 from .alternator import Alternator
@@ -27,6 +30,7 @@ from .ann import EvolvedANN, EvolvedANN5, EvolvedANNNoise05
 from .ann import ANN, EvolvableANN  # pylint: disable=unused-import
 from .apavlov import APavlov2006, APavlov2011
 from .appeaser import Appeaser
+from .attention import EvolvedAttention
 from .averagecopier import AverageCopier, NiceAverageCopier
 from .axelrod_first import (
     FirstByDavis,
@@ -149,7 +153,7 @@ from .grumpy import Grumpy
 from .handshake import Handshake
 from .hmm import EvolvedHMM5
 from .hmm import EvolvableHMMPlayer, HMMPlayer  # pylint: disable=unused-import
-from .human import Human  # pylint: disable=unused-import
+
 from .hunter import (
     AlternatorHunter,
     CooperatorHunter,
@@ -190,6 +194,7 @@ from .memoryone import (  # pylint: disable=unused-import
 from .memorytwo import AON2, MEM2, DelayedAON1
 from .memorytwo import MemoryTwoPlayer  # pylint: disable=unused-import
 
+from .momentum import Momentum
 from .mutual import Desperate, Hopeless, Willing
 from .negation import Negation
 from .oncebitten import FoolMeOnce, ForgetfulFoolMeOnce, OnceBitten
@@ -239,11 +244,13 @@ from .sequence_player import (  # pylint: disable=unused-import
 )
 from .shortmem import ShortMem
 from .stalker import Stalker
+from .frequency_analyzer import FrequencyAnalyzer
 from .titfortat import (
     AdaptiveTitForTat,
     Alexei,
     AntiTitForTat,
     Bully,
+    BurnBothEnds,
     ContriteTitForTat,
     DynamicTwoTitsForTat,
     EugineNier,
@@ -306,6 +313,7 @@ all_strategies = [
     BackStabber,
     BetterAndBetter,
     Bully,
+    BurnBothEnds,
     BushMosteller,
     Calculator,
     Capri,
@@ -345,6 +353,7 @@ all_strategies = [
     EvolvedHMM5,
     EvolvedLookerUp1_1_1,
     EvolvedLookerUp2_2_2,
+    EvolvedAttention,
     FirmButFair,
     FirstByAnonymous,
     FirstByDavis,
@@ -365,6 +374,7 @@ all_strategies = [
     ForgivingTitForTat,
     Fortress3,
     Fortress4,
+    FrequencyAnalyzer,
     GTFT,
     GeneralSoftGrudger,
     GoByMajority,
@@ -399,6 +409,7 @@ all_strategies = [
     MEM2,
     MathConstantHunter,
     Michaelos,
+    Momentum,
     NTitsForMTats,
     NaiveProber,
     Negation,

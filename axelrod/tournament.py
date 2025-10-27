@@ -3,19 +3,24 @@ import logging
 import os
 import warnings
 from collections import defaultdict
-from multiprocessing import Process, Queue, cpu_count
+from multiprocessing import Process, Queue, cpu_count, set_start_method
+
+# This is necessary for the code to work on Linux
+# torch multiprocessing is not compatible with the default 'fork' method
+set_start_method("spawn", force=True)
 from tempfile import mkstemp
 from typing import List, Optional, Tuple
 
-import axelrod.interaction_utils as iu
 import tqdm
+
+import axelrod.interaction_utils as iu
 from axelrod import DEFAULT_TURNS
 from axelrod.action import Action, actions_to_str
 from axelrod.player import Player
 
 from .game import Game
 from .match import Match
-from .match_generator import MatchGenerator
+from .match_generator import MatchChunk, MatchGenerator
 from .result_set import ResultSet
 
 C, D = Action.C, Action.D
@@ -27,13 +32,13 @@ class Tournament(object):
         players: List[Player],
         name: str = "axelrod",
         game: Game = None,
-        turns: int = None,
-        prob_end: float = None,
+        turns: Optional[int] = None,
+        prob_end: Optional[float] = None,
         repetitions: int = 10,
         noise: float = 0,
-        edges: List[Tuple] = None,
-        match_attributes: dict = None,
-        seed: int = None,
+        edges: Optional[List[Tuple]] = None,
+        match_attributes: Optional[dict] = None,
+        seed: Optional[int] = None,
     ) -> None:
         """
         Parameters
@@ -109,8 +114,8 @@ class Tournament(object):
     def play(
         self,
         build_results: bool = True,
-        filename: str = None,
-        processes: int = None,
+        filename: Optional[str] = None,
+        processes: Optional[int] = None,
         progress_bar: bool = True,
     ) -> ResultSet:
         """
@@ -426,7 +431,7 @@ class Tournament(object):
         done_queue.put("STOP")
         return True
 
-    def _play_matches(self, chunk, build_results=True):
+    def _play_matches(self, chunk: Match, build_results: bool = True):
         """
         Play matches in a given chunk.
 
@@ -445,14 +450,13 @@ class Tournament(object):
                 (0, 1) -> [(C, D), (D, C),...]
         """
         interactions = defaultdict(list)
-        index_pair, match_params, repetitions, seed = chunk
-        p1_index, p2_index = index_pair
+        p1_index, p2_index = chunk.index_pair
         player1 = self.players[p1_index].clone()
         player2 = self.players[p2_index].clone()
-        match_params["players"] = (player1, player2)
-        match_params["seed"] = seed
-        match = Match(**match_params)
-        for _ in range(repetitions):
+        chunk.match_params["players"] = (player1, player2)
+        chunk.match_params["seed"] = chunk.seed
+        match = Match(**chunk.match_params)
+        for _ in range(chunk.repetitions):
             match.play()
 
             if build_results:
@@ -460,7 +464,7 @@ class Tournament(object):
             else:
                 results = None
 
-            interactions[index_pair].append([match.result, results])
+            interactions[chunk.index_pair].append([match.result, results])
         return interactions
 
     def _calculate_results(self, interactions):

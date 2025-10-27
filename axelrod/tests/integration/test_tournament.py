@@ -2,11 +2,12 @@ import filecmp
 import pathlib
 import unittest
 
+from hypothesis import given, settings
+
 import axelrod as axl
 from axelrod.load_data_ import axl_filename
 from axelrod.strategy_transformers import FinalTransformer
 from axelrod.tests.property import tournaments
-from hypothesis import given, settings
 
 
 class TestTournament(unittest.TestCase):
@@ -44,7 +45,7 @@ class TestTournament(unittest.TestCase):
             max_repetitions=4,
         )
     )
-    @settings(max_examples=1)
+    @settings(max_examples=1, deadline=None)
     def test_big_tournaments(self, tournament):
         """A test to check that tournament runs with a sample of non-cheating
         strategies."""

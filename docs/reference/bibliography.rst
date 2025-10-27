@@ -43,9 +43,8 @@ documentation.
 .. [Li2014] Li, J. and Kendall, G. (2014). The Effect of Memory Size on the Evolutionary Stability of Strategies in Iterated Prisoner's Dilemma. IEEE Transactions on Evolutionary Computation, 18(6) 819-826
 .. [LiS2014] Li, Siwei. (2014). Strategies in the Stochastic Iterated Prisoner's Dilemma. Available at: http://math.uchicago.edu/~may/REU2014/REUPapers/Li,Siwei.pdf
 .. [Luis2008] Luis R. Izquierdo and Segismundo S. Izquierdo (2008). Dynamics of the Bush-Mosteller Learning Algorithm in 2x2 Games, Reinforcement Learning, Cornelius Weber,  Mark Elshaw and Norbert Michael Mayer  (Ed.), InTech, DOI: 10.5772/5282. Available from: https://www.intechopen.com/books/reinforcement_learning/dynamics_of_the_bush-mosteller_learning_algorithm_in_2x2_games
-.. [Mathieu2015] Mathieu, P. and Delahaye, J. (2015). New Winning Strategies
-  for the Iterated Prisoner's Dilemma. Proceedings of the 2015
-  International Conference on Autonomous Agents and Multiagent Systems.
+.. [Marinoff1992] Marinoff, Louis. (1992). Maximizing expected utilities in the prisoner's dilemma. Journal of Conflict Resolution 36.1: 183-216.
+.. [Mathieu2015] Mathieu, P. and Delahaye, J. (2015). New Winning Strategies for the Iterated Prisoner's Dilemma. Proceedings of the 2015 International Conference on Autonomous Agents and Multiagent Systems.
 .. [Mittal2009] Mittal, S., & Deb, K. (2009). Optimal strategies of the iterated prisoner’s dilemma problem for multiple conflicting objectives. IEEE Transactions on Evolutionary Computation, 13(3), 554–565. https://doi.org/10.1109/TEVC.2008.2009459
 .. [Murase2020] Murase, Y., & Baek, S.K. (2020). Five Rules for Friendly Rivalry in Direct Reciprocity. Scientific Reports 10:16904 https://doi.org/10.1038/s41598-020-73855-x
 .. [Nachbar1992] Nachbar J., Evolution in the finitely repeated prisoner’s dilemma, Journal of Economic Behavior & Organization, 19(3): 307-326, 1992.
@@ -55,7 +54,7 @@ documentation.
 .. [Nowak1992] Nowak, M.., & May, R. M. (1992). Evolutionary games and spatial chaos. Nature. http://doi.org/10.1038/359826a0
 .. [Nowak1993] Nowak, M., & Sigmund, K. (1993). A strategy of win-stay, lose-shift that outperforms tit-for-tat in the Prisoner’s Dilemma game. Nature, 364(6432), 56–58. http://doi.org/10.1038/364056a0
 .. [Ohtsuki2006] Ohtsuki, Hisashi, et al. "A simple rule for the evolution of cooperation on graphs and social networks." Nature 441.7092 (2006): 502.
-.. [PD2017] http://www.prisoners-dilemma.com/competition.html (Accessed: 6 June 2017)
+.. [PD2017] http://www.prisoners-dilemma.com/competition.html (Accessed: 6 June 2017). Archived at https://web.archive.org/web/20171227021632/http://www.prisoners-dilemma.com/competition.html
 .. [Press2012] Press, W. H., & Dyson, F. J. (2012). Iterated Prisoner’s Dilemma contains strategies that dominate any evolutionary opponent. Proceedings of the National Academy of Sciences, 109(26), 10409–10413.  http://doi.org/10.1073/pnas.1206569109
 .. [Prison1998] LIFL (1998) PRISON. Available at: http://www.lifl.fr/IPD/ipd.frame.html (Accessed: 19 September 2016).
 .. [Robson1990] Robson, Arthur J. "Efficiency in evolutionary games: Darwin, Nash and the secret handshake." Journal of theoretical Biology 144.3 (1990): 379-396.

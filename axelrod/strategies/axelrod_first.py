@@ -15,10 +15,11 @@ been made they are explained in the strategy docstrings.
 
 from typing import Dict, List, Optional, Tuple
 
+from scipy.stats import chisquare
+
 from axelrod.action import Action
 from axelrod.player import Player
 from axelrod.strategy_transformers import FinalTransformer
-from scipy.stats import chisquare
 
 from .memoryone import MemoryOnePlayer
 
@@ -569,7 +570,7 @@ class FirstByNydegger(Player):
 
     .. math::
 
-        A \in \{1, 6, 7, 17, 22, 23, 26, 29, 30, 31, 33, 38, 39, 45, 49, 54, 55, 58, 61\}
+        A \\in \\{1, 6, 7, 17, 22, 23, 26, 29, 30, 31, 33, 38, 39, 45, 49, 54, 55, 58, 61\\}
 
     Thus if all three preceding moves are mutual defection, A = 63 and the rule
     cooperates. This rule was designed for use in laboratory experiments as a
@@ -624,7 +625,6 @@ class FirstByNydegger(Player):
         opponent_history: List[Action],
         score_map: Dict[Tuple[Action, Action], int],
     ) -> int:
-
         """Implements the Nydegger formula A = 16 a_1 + 4 a_2 + a_3"""
         a = 0
         for i, weight in [(-1, 16), (-2, 4), (-3, 1)]:

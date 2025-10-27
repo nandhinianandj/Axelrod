@@ -3,14 +3,14 @@ import pathlib
 import unittest
 from collections import Counter
 
-import axelrod as axl
 import pandas as pd
+from hypothesis import given, settings
+from numpy import mean, nanmedian, std
+
+import axelrod as axl
 from axelrod.load_data_ import axl_filename
 from axelrod.result_set import create_counter_dict
 from axelrod.tests.property import prob_end_tournaments, tournaments
-from dask.dataframe.core import DataFrame
-from hypothesis import given, settings
-from numpy import mean, nanmedian, std
 
 C, D = axl.Action.C, axl.Action.D
 
@@ -646,6 +646,7 @@ class TestResultSet(unittest.TestCase):
                 0.0,
                 3.0,
                 0.0,
+                1,
                 0.0,
                 0.0,
                 0.4000000000000001,
@@ -662,6 +663,7 @@ class TestResultSet(unittest.TestCase):
                 0.7,
                 0.0,
                 1.0,
+                2,
                 0.6666666666666666,
                 0.03333333333333333,
                 0.0,
@@ -678,6 +680,7 @@ class TestResultSet(unittest.TestCase):
                 0.7,
                 0.0,
                 1.0,
+                3,
                 0.6666666666666666,
                 0.03333333333333333,
                 0.0,
@@ -694,6 +697,7 @@ class TestResultSet(unittest.TestCase):
                 1.0,
                 0.0,
                 1.0,
+                0,
                 0.6666666666666666,
                 0.3333333333333333,
                 0.0,
@@ -723,7 +727,7 @@ class TestResultSet(unittest.TestCase):
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 ranked_names.append(row[1])
-                self.assertEqual(len(row), 14)
+                self.assertEqual(len(row), 15)
         self.assertEqual(ranked_names[0], "Name")
         self.assertEqual(ranked_names[1:], rs.ranked_names)
 
@@ -746,6 +750,7 @@ class TestResultSetSpatialStructure(TestResultSet):
         cls.filename = str(axl_filename(path))
         cls.players = [axl.Alternator(), axl.TitForTat(), axl.Defector()]
         cls.turns = 5
+        cls.repetitions = 3
         cls.edges = [(0, 1), (0, 2)]
 
         cls.expected_match_lengths = [
@@ -956,6 +961,7 @@ class TestResultSetSpatialStructureTwo(TestResultSetSpatialStructure):
             axl.Cooperator(),
         ]
         cls.turns = 5
+        cls.repetitions = 3
         cls.edges = [(0, 1), (2, 3)]
 
         cls.expected_match_lengths = [
@@ -1179,6 +1185,7 @@ class TestResultSetSpatialStructureThree(TestResultSetSpatialStructure):
             axl.Cooperator(),
         ]
         cls.turns = 5
+        cls.repetitions = 3
         cls.edges = [(0, 0), (1, 1), (2, 2), (3, 3)]
 
         cls.expected_match_lengths = [

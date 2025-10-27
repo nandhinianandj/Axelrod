@@ -1,7 +1,8 @@
 import pathlib
-from typing import Dict, List, Text, Tuple
+import pkgutil
+from typing import Callable, Dict, List, Optional, Tuple
 
-import pkg_resources
+import torch
 
 
 def axl_filename(path: pathlib.Path) -> pathlib.Path:
@@ -21,12 +22,20 @@ def axl_filename(path: pathlib.Path) -> pathlib.Path:
     return axl_path / path
 
 
-def load_file(filename: str, directory: str) -> List[List[str]]:
+def load_file(
+    filename: str,
+    directory: str,
+    get_data: Callable[[str, str], Optional[bytes]] = pkgutil.get_data,
+) -> List[List[str]]:
     """Loads a data file stored in the Axelrod library's data subdirectory,
     likely for parameters for a strategy."""
-    path = "/".join((directory, filename))
-    data_bytes = pkg_resources.resource_string(__name__, path)
+
+    path = str(pathlib.Path(directory) / filename)
+    data_bytes = get_data(__name__, path)
+    if data_bytes is None:
+        raise FileNotFoundError(f"Some loader issue for path {path}")
     data = data_bytes.decode("UTF-8", "replace")
+
     rows = []
     for line in data.split("\n"):
         if line.startswith("#") or len(line) == 0:
@@ -56,7 +65,12 @@ def load_pso_tables(filename="pso_gambler.csv", directory="data"):
     rows = load_file(filename, directory)
     d = dict()
     for row in rows:
-        name, a, b, c, = (
+        (
+            name,
+            a,
+            b,
+            c,
+        ) = (
             str(row[0]),
             int(row[1]),
             int(row[2]),
@@ -65,3 +79,14 @@ def load_pso_tables(filename="pso_gambler.csv", directory="data"):
         values = list(map(float, row[4:]))
         d[(name, int(a), int(b), int(c))] = values
     return d
+
+
+def load_attention_model_weights(
+    filename="model_attention.pth", directory="axelrod/data"
+):
+    """Load attention model weights."""
+    path = str(axl_filename(pathlib.Path(directory) / filename))
+    weights = torch.load(
+        path, map_location=torch.device("cpu"), weights_only=True
+    )
+    return weights

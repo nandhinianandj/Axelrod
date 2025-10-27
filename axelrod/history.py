@@ -117,8 +117,8 @@ class LimitedHistory(History):
         memory_depth, int:
             length of history to retain
         """
-        super().__init__(plays=plays, coplays=coplays)
         self.memory_depth = memory_depth
+        super().__init__(plays=plays, coplays=coplays)
 
     def flip_plays(self):
         """Creates a flipped plays history for use with DualTransformer."""
@@ -130,13 +130,19 @@ class LimitedHistory(History):
     def append(self, play, coplay):
         """Appends a new (play, coplay) pair an updates metadata for
         number of cooperations and defections, and the state distribution."""
-
         self._plays.append(play)
         self._actions[play] += 1
-        if coplay:
-            self._coplays.append(coplay)
-            self._state_distribution[(play, coplay)] += 1
+        self._coplays.append(coplay)
+        self._state_distribution[(play, coplay)] += 1
         if len(self._plays) > self.memory_depth:
             first_play, first_coplay = self._plays.pop(0), self._coplays.pop(0)
             self._actions[first_play] -= 1
             self._state_distribution[(first_play, first_coplay)] -= 1
+
+    def extend(self, new_plays, new_coplays):
+        """A function that emulates list.extend, respecting the stated memory depth."""
+        self._plays.extend(new_plays)
+        self._coplays.extend(new_coplays)
+        if len(self._plays) > self.memory_depth:
+            self._plays = self._plays[-self.memory_depth :]
+            self._coplays = self._coplays[-self.memory_depth :]

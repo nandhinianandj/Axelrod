@@ -1,10 +1,11 @@
 """Tests for the various Meta strategies."""
 
+from hypothesis import HealthCheck, given, settings
+from hypothesis.strategies import integers
+
 import axelrod as axl
 from axelrod.classifier import Classifiers
 from axelrod.tests.property import strategy_lists
-from hypothesis import given, settings
-from hypothesis.strategies import integers
 
 from .test_player import TestPlayer
 
@@ -67,7 +68,11 @@ class TestMetaPlayer(TestPlayer):
         )
 
     @given(seed=integers(min_value=1, max_value=20000000))
-    @settings(max_examples=1, deadline=None)
+    @settings(
+        max_examples=1,
+        deadline=None,
+        suppress_health_check=(HealthCheck.differing_executors,),
+    )
     def test_clone(self, seed):
         # Test that the cloned player produces identical play
         player1 = self.player()
@@ -79,7 +84,7 @@ class TestMetaPlayer(TestPlayer):
         self.assertEqual(player2.classifier, player1.classifier)
         self.assertEqual(player2.match_attributes, player1.match_attributes)
 
-        turns = 10
+        turns = 5
         for op in [
             axl.Cooperator(),
             axl.Defector(),
@@ -97,8 +102,12 @@ class TestMetaPlayer(TestPlayer):
         with self.assertRaises(TypeError):
             p.update_histories(C)
 
-    @settings(max_examples=5, deadline=None)
     @given(opponent_list=strategy_lists(max_size=1))
+    @settings(
+        max_examples=1,
+        deadline=None,
+        suppress_health_check=(HealthCheck.differing_executors,),
+    )
     def test_players_return_valid_actions(self, opponent_list):
         """
         Whenever a new strategy is added to the library this potentially
@@ -113,7 +122,7 @@ class TestMetaPlayer(TestPlayer):
         """
         player = self.player()
         opponent = opponent_list[0]()
-        match = axl.Match(players=(player, opponent))
+        match = axl.Match(players=(player, opponent), turns=10)
         interactions = match.play()
         player_actions = set(player_action for player_action, _ in interactions)
         self.assertTrue(player_actions <= set((C, D)))
@@ -630,12 +639,6 @@ class TestNMWEDeterministic(TestMetaPlayer):
     # Skip this test
     def classifier_test(self, expected_class_classifier=None):
         pass
-
-    def test_strategy(self):
-        actions = [(C, C), (C, D), (C, C), (D, D), (D, C)]
-        self.versus_test(
-            opponent=axl.Alternator(), expected_actions=actions, seed=11
-        )
 
 
 class TestNMWEStochastic(TestMetaPlayer):

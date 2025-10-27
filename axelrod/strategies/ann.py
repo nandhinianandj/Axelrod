@@ -1,6 +1,7 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
+
 from axelrod.action import Action
 from axelrod.evolvable_player import (
     EvolvablePlayer,
@@ -197,7 +198,10 @@ class ANN(Player):
     }
 
     def __init__(
-        self, num_features: int, num_hidden: int, weights: List[float] = None
+        self,
+        num_features: int,
+        num_hidden: int,
+        weights: Optional[List[float]] = None,
     ) -> None:
         Player.__init__(self)
         self.num_features = num_features
@@ -235,10 +239,10 @@ class EvolvableANN(ANN, EvolvablePlayer):
         self,
         num_features: int,
         num_hidden: int,
-        weights: List[float] = None,
-        mutation_probability: float = None,
+        weights: Optional[List[float]] = None,
+        mutation_probability: Optional[float] = None,
         mutation_distance: int = 5,
-        seed: int = None,
+        seed: Optional[int] = None,
     ) -> None:
         EvolvablePlayer.__init__(self, seed=seed)
         (

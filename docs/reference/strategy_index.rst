@@ -18,6 +18,8 @@ Here are the docstrings of all the strategies in the library.
    :members:
 .. automodule:: axelrod.strategies.appeaser
    :members:
+.. automodule:: axelrod.strategies.attention
+   :members:
 .. automodule:: axelrod.strategies.averagecopier
    :members:
 .. automodule:: axelrod.strategies.axelrod_first
@@ -48,6 +50,8 @@ Here are the docstrings of all the strategies in the library.
    :members:
 .. automodule:: axelrod.strategies.forgiver
    :members:
+.. automodule:: axelrod.strategies.frequency_analyzer
+   :members:
 .. automodule:: axelrod.strategies.gambler
    :members:
 .. automodule:: axelrod.strategies.gobymajority
@@ -73,6 +77,8 @@ Here are the docstrings of all the strategies in the library.
 .. automodule:: axelrod.strategies.memorytwo
    :members:
 .. automodule:: axelrod.strategies.memoryone
+   :members:
+.. automodule:: axelrod.strategies.momentum
    :members:
 .. automodule:: axelrod.strategies.meta
    :members:
