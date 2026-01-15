@@ -73,6 +73,7 @@ from .axelrod_second import (
     SecondByYamachi,
 )
 from .backstabber import BackStabber, DoubleCrosser
+from .bayesian import Bayesian, CooperativeBayesian, DefectingBayesian
 from .better_and_better import BetterAndBetter
 from .bush_mosteller import BushMosteller
 from .calculator import Calculator
@@ -302,6 +303,7 @@ all_strategies = [
     AdaptorBrief,
     AdaptorLong,
     Aggravater,
+    Bayesian,
     Alexei,
     Alternator,
     AlternatorHunter,
@@ -320,6 +322,7 @@ all_strategies = [
     CautiousQLearner,
     CollectiveStrategy,
     ContriteTitForTat,
+    CooperativeBayesian,
     Cooperator,
     CooperatorHunter,
     CycleHunter,
@@ -331,6 +334,7 @@ all_strategies = [
     CyclerDDC,
     DBS,
     Darwin,
+    DefectingBayesian,
     Defector,
     DefectorHunter,
     DelayedAON1,

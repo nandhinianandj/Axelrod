@@ -425,7 +425,6 @@ class TestPlayer(unittest.TestCase):
     @settings(
         max_examples=1,
         deadline=None,
-        suppress_health_check=(HealthCheck.differing_executors,),
     )
     def test_equality_of_clone(self, seed, opponent):
         p1 = self.player()
@@ -439,7 +438,6 @@ class TestPlayer(unittest.TestCase):
     @settings(
         max_examples=1,
         deadline=None,
-        suppress_health_check=(HealthCheck.differing_executors,),
     )
     def test_equality_of_pickle_clone(self, seed, opponent):
         p1 = self.player()
@@ -476,7 +474,6 @@ class TestPlayer(unittest.TestCase):
     @settings(
         max_examples=1,
         deadline=None,
-        suppress_health_check=(HealthCheck.differing_executors,),
     )
     def test_clone_reproducible_play(self, seed, turns, noise):
         # Test that the cloned player produces identical play
@@ -520,7 +517,6 @@ class TestPlayer(unittest.TestCase):
     @settings(
         max_examples=1,
         deadline=None,
-        suppress_health_check=(HealthCheck.differing_executors,),
     )
     def test_memory_depth_upper_bound(self, strategies, seed, turns):
         """
